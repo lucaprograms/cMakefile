@@ -12,7 +12,14 @@
 .PHONY: enablerun
 .PHONY: disablerun
 # end
-application.exe:
+SRC := main.c
+COUNTER := version.txt
+application.exe: $(SRC)
+	@mkdir -p $(dir $(COUNTER))
+	@if [ ! -f "$(COUNTER)" ]; then echo 0 > "$(COUNTER)"; fi
+	@old=$$(cat "$(COUNTER)"); \
+	new=$$((old + 1)); \
+	echo "$$new" > "$(COUNTER).tmp" && mv "$(COUNTER).tmp" "$(COUNTER)"
 	@echo ""
 	@echo ""
 	@echo "Compiling application exe..."
