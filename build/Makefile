@@ -3,8 +3,14 @@
 .PHONY: help
 .PHONY: print
 .PHONY: clean
-.PHONY: run
-.PHONY: all
+.PHONY: enabletest
+.PHONY: disabletest
+.PHONY: enable
+.PHONY: disable
+.PHONY: allenable
+.PHONY: alldisable
+.PHONY: enablerun
+.PHONY: disablerun
 # end
 application.exe:
 	@echo ""
@@ -13,17 +19,63 @@ application.exe:
 	@echo ""
 	@echo ""
 	@gcc main.c -o application.exe
+enable:
+	@echo ""
+	@echo ""
+	@echo "Enabling most options..."
+	@echo ""
+	@echo ""
+	@make enabletest
+	@make allenable
+	@make enablerun
+enablerun:
+	@echo ""
+	@echo ""
+	@echo "Disabling run option..."
+	@echo ""
+	@echo ""
+	@rm -f run
+disablerun:
+	@echo ""
+	@echo ""
+	@echo "Disabling run option..."
+	@echo ""
+	@echo ""
+	@touch run
+disable:
+	@echo ""
+	@echo ""
+	@echo "Disabling most options..."
+	@echo ""
+	@echo ""
+	@make disabletest
+	@make alldisable
+	@make disablerun
+alldisable:
+	@echo ""
+	@echo ""
+	@echo "Disabling all option..."
+	@echo ""
+	@echo ""
+	@touch all
+allenable:
+	@echo ""
+	@echo ""
+	@echo "Enabling run option..."
+	@echo ""
+	@echo ""
+	@rm -f all
 all:
-	make help
-	make print
-	make
-	make main.c
-	make run
-	make clean
+	@make help
+	@make print
+	@make
+	@make main.c
+	@make run
+	@make clean
 test:
-	make
-	make run
-	make clean
+	@make
+	@make run
+	@make clean
 clean:
 	@echo ""
 	@echo ""
@@ -32,6 +84,20 @@ clean:
 	@echo ""
 	@rm -f a*
 	@rm -f A*
+disabletest:
+	@echo ""
+	@echo ""
+	@echo "Disabling test option..."
+	@echo ""
+	@echo ""
+	@touch test
+enabletest:
+	@echo ""
+	@echo ""
+	@echo "Enabling test option..."
+	@echo ""
+	@echo ""
+	@rm -f test
 help:
 	@echo ""
 	@echo ""
@@ -45,6 +111,8 @@ help:
 	@echo "make application.exe: Compile the application"
 	@echo "make clean: Deletes all files starting with 'a' and 'A'"
 	@echo "make run: Run the executable (application)"
+	@echo "make disabletest: disables the test option"
+	@echo "make enabletest: enables the test option"
 	@echo ""
 	@echo ""
 run:
