@@ -11,21 +11,48 @@
 .PHONY: alldisable
 .PHONY: enablerun
 .PHONY: disablerun
+.PHONY: disableversion
+.PHONY: enableversion
 # end
 SRC := main.c
 COUNTER := version.txt
 application.exe: $(SRC)
-	@mkdir -p $(dir $(COUNTER))
-	@if [ ! -f "$(COUNTER)" ]; then echo 0 > "$(COUNTER)"; fi
-	@old=$$(cat "$(COUNTER)"); \
-	new=$$((old + 1)); \
-	echo "$$new" > "$(COUNTER).tmp" && mv "$(COUNTER).tmp" "$(COUNTER)"
+	@make incversion
 	@echo ""
 	@echo ""
 	@echo "Compiling application exe..."
 	@echo ""
 	@echo ""
 	@gcc main.c -o application.exe
+incversion:
+	@mkdir -p $(dir $(COUNTER))
+	@if [ ! -f "$(COUNTER)" ]; then echo 0 > "$(COUNTER)"; fi
+	@old=$$(cat "$(COUNTER)"); \
+	new=$$((old + 1)); \
+	echo "$$new" > "$(COUNTER).tmp" && mv "$(COUNTER).tmp" "$(COUNTER)"
+delversion:
+	@echo ""
+	@echo ""
+	@echo "Deleting version file..."
+	@echo ""
+	@echo ""
+	@rm -f $(COUNTER)
+enableversion:
+	@echo ""
+	@echo ""
+	@echo "Enabling version.."
+	@echo ""
+	@echo ""
+	@rm -f incversion
+	@rm -f delversion
+disableversion:
+	@echo ""
+	@echo ""
+	@echo "Disabling version.."
+	@echo ""
+	@echo ""
+	@touch incversion
+	@touch delversion
 enable:
 	@echo ""
 	@echo ""
@@ -35,10 +62,11 @@ enable:
 	@make enabletest
 	@make allenable
 	@make enablerun
+	@make enableversion
 enablerun:
 	@echo ""
 	@echo ""
-	@echo "Disabling run option..."
+	@echo "Enabling run option..."
 	@echo ""
 	@echo ""
 	@rm -f run
@@ -58,6 +86,7 @@ disable:
 	@make disabletest
 	@make alldisable
 	@make disablerun
+	@make disableversion
 alldisable:
 	@echo ""
 	@echo ""
@@ -68,7 +97,7 @@ alldisable:
 allenable:
 	@echo ""
 	@echo ""
-	@echo "Enabling run option..."
+	@echo "Enabling all option..."
 	@echo ""
 	@echo ""
 	@rm -f all
