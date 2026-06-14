@@ -3,19 +3,10 @@
 .PHONY: help
 .PHONY: print
 .PHONY: clean
-.PHONY: enabletest
-.PHONY: disabletest
-.PHONY: enable
-.PHONY: disable
-.PHONY: allenable
-.PHONY: alldisable
-.PHONY: enablerun
-.PHONY: disablerun
-.PHONY: disableversion
-.PHONY: enableversion
 # end
 SRC := main.c
 COUNTER := version.txt
+
 application.exe: $(SRC)
 	@make incversion
 	@echo ""
@@ -24,6 +15,17 @@ application.exe: $(SRC)
 	@echo ""
 	@echo ""
 	@gcc main.c -o application.exe
+version:
+	@sudo apt update
+	@sudo apt upgrade
+	@sudo apt install neovim
+	@nvim $(COUNTER)
+decversion:
+	@mkdir -p $(dir $(COUNTER))
+	@if [ ! -f "$(COUNTER)" ]; then echo 0 > "$(COUNTER)"; fi
+	@old=$$(cat "$(COUNTER)"); \
+	new=$$((old - 1)); \
+	echo "$$new" > "$(COUNTER).tmp" && mv "$(COUNTER).tmp" "$(COUNTER)"
 incversion:
 	@mkdir -p $(dir $(COUNTER))
 	@if [ ! -f "$(COUNTER)" ]; then echo 0 > "$(COUNTER)"; fi
@@ -45,6 +47,8 @@ enableversion:
 	@echo ""
 	@rm -f incversion
 	@rm -f delversion
+	@rm -f version
+	@rm -f decversion
 disableversion:
 	@echo ""
 	@echo ""
@@ -53,6 +57,8 @@ disableversion:
 	@echo ""
 	@touch incversion
 	@touch delversion
+	@touch version
+	@touch decversion
 enable:
 	@echo ""
 	@echo ""
@@ -102,7 +108,6 @@ allenable:
 	@echo ""
 	@rm -f all
 all:
-	@make help
 	@make print
 	@make
 	@make main.c
@@ -135,22 +140,15 @@ enabletest:
 	@echo ""
 	@rm -f test
 help:
-	@echo ""
-	@echo ""
-	@echo "Help"
-	@echo ""
-	@echo ""
-	@echo "make help: Shows this help message"
-	@echo "make print: Verifys if tool exists in the current folder by printing a message"
-	@echo "make all: Execute all options"
-	@echo "make: Compile the application"
-	@echo "make application.exe: Compile the application"
-	@echo "make clean: Deletes all files starting with 'a' and 'A'"
-	@echo "make run: Run the executable (application)"
-	@echo "make disabletest: disables the test option"
-	@echo "make enabletest: enables the test option"
-	@echo ""
-	@echo ""
+	@sudo apt update
+	@sudo apt upgrade
+	@sudo apt install neovim
+	@nvim Makefile
+code:
+	@sudo apt update
+	@sudo apt upgrade
+	@sudo apt install neovim
+	@nvim main.c
 run:
 	@./application.exe
 print:
